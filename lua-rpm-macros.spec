@@ -3,7 +3,7 @@ Version: 1.0.2
 Release: 0
 Summary: Luarocks generator macros
 License: GPLv3
-Source0: %{name}.tar
+Source0: %{name}-%{version}.tar.xz
 BuildArch: noarch
 Requires: luarocks-subpackages-macros
 Requires: luarocks-macros
@@ -28,7 +28,7 @@ Requires: luarocks-macros
 %{summary}.
 
 %prep
-%autosetup -p1 -n %{name}
+%autosetup -p1 -n %{name}-%{version}
 
 %install
 

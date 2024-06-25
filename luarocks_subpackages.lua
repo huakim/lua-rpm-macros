@@ -50,12 +50,12 @@ rpm.expand('%__lua_subpackages_helper'),
 'tmp',tmpfile,
 'specfile',tmpfile,
 'random',random_f,
-'version', rpm.expand('%luarock_pkg_version'),
+'version', rpm.expand('%luarocks_pkg_version'),
 'lua_version',lua_version,
 'lua_versions',rpm.expand('%lua_versions'),
 'name',rpm.expand('%name'),
 'summary',rpm.expand('%summary'),
-'package',rpm.expand('%luarock_pkg_name'),
+'package',rpm.expand('%luarocks_pkg_name'),
 'flags',flags
 )
 
@@ -69,8 +69,8 @@ for i in %{lua_versions}
 do
   dir=".luarocks/lua${i}"
   mkdir -p "${dir}"
-  %luarocks_build --lua-version "${i}" "%{luarock_pkg_rockspec}"
-  mv '%{luarock_pkg_prefix}'.*.rock "${dir}"
+  %luarocks_build --lua-version "${i}" "%{luarocks_pkg_rockspec}"
+  mv '%{luarocks_pkg_prefix}'.*.rock "${dir}"
 done
 
 ]];
@@ -79,7 +79,7 @@ local install = [[
 
 for i in %{lua_versions}
 do
-  %luarocks_install --lua-version "${i}" ".luarocks/lua${i}/"'%{luarock_pkg_prefix}'.*.rock
+  %luarocks_install --lua-version "${i}" ".luarocks/lua${i}/"'%{luarocks_pkg_prefix}'.*.rock
   rm -Rf %{buildroot}%{_bindir}
 done
 
@@ -116,7 +116,7 @@ echo "${tree#"%{buildroot}"}" > "$flist"
 while read -r line; do
   echo_module ${line} >> "$flist"
 
-done <<< "$(%__luarocks --lua-version ${i} show --porcelain --tree="%{buildroot}%{_prefix}" "%{luarock_pkg_name}")"
+done <<< "$(%__luarocks --lua-version ${i} show --porcelain --tree="%{buildroot}%{_prefix}" "%{luarocks_pkg_name}")"
 
 rm -Rf "${tree}/"{manifest,index}* ||:
 

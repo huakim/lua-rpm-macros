@@ -27,7 +27,7 @@ lua_versions = lua_versions.split()
 expand_files = 'f' in flags
 
 multi_sections = { i: SpecFileParser.Specfile(
-    specfile, macros=[ ( 'lua_version', i ), ('luarock_subpackages', '#'), ('lua_files', '-f lua_subpackages.list') ]
+    specfile, macros=[ ( 'lua_version', i ), ('luarocks_subpackages', '#'), ('lua_files', '-f lua_subpackages.list') ]
     ) for i in lua_versions }
 
 spec = multi_sections[lua_version]

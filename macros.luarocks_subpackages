@@ -19,4 +19,3 @@ print(str) }
 %luarocks_subpackages(f) %{_require_luarocks_subpackages}%{lua:                \
 luarocks_subpackages.parse(arg, opt);                                         \
 }
-

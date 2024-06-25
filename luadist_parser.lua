@@ -1,12 +1,12 @@
 local luadist = {}
 
 function luadist:rockspec_var(placeholder)
-    local luarock_rockspec = self.luarock_rockspec
-    if luarock_rockspec == nil
+    local luarocks_rockspec = self.luarocks_rockspec
+    if luarocks_rockspec == nil
     then
       local path = self:get_rockspec_file()
       local file = rpm.open(path, 'r')
-      self.luarock_rockspec = load(
+      self.luarocks_rockspec = load(
 [[
 local _ENV = {}
 
@@ -15,7 +15,7 @@ local _ENV = {}
 return _ENV
 ]])()
     end
-    return load('return function(lua) return lua.'..placeholder..' end')()(luarock_rockspec)
+    return load('return function(lua) return lua.'..placeholder..' end')()(luarocks_rockspec)
 end
 
 function luadist:prepare_macros(name, template, template_type)
@@ -47,23 +47,23 @@ function luadist:essential_setup()
 end
 
 function luadist:get_rockspec()
-  return self:prepare_macros('luarock_pkg_rockspec', function () return self:get_prefix() .. '.rockspec' end, 1)
+  return self:prepare_macros('luarocks_pkg_rockspec', function () return self:get_prefix() .. '.rockspec' end, 1)
 end
 
 function luadist:get_prefix()
-  return self:prepare_macros('luarock_pkg_prefix', function () return self:get_name() .. '-' .. self:get_version() end , 1)
+  return self:prepare_macros('luarocks_pkg_prefix', function () return self:get_name() .. '-' .. self:get_version() end , 1)
 end
 
 function luadist:get_name()
-  return self:prepare_macros('luarock_pkg_name', '%{package}')
+  return self:prepare_macros('luarocks_pkg_name', '%{package}')
 end
 
 function luadist:get_version()
-  return self:prepare_macros('luarock_pkg_version', '%{version}')
+  return self:prepare_macros('luarocks_pkg_version', '%{version}')
 end
 
 function luadist:get_rockspec_file()
-  return self:prepare_macros('luarock_rockspec_file', '%{SOURCE1}', 0)
+  return self:prepare_macros('luarocks_rockspec_file', '%{SOURCE1}', 0)
 end
 
 function luadist:parse_modreq(arg, opt)
