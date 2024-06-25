@@ -29,5 +29,5 @@ BuildRequires: make \
   luadist_parser:parse_req(arg, opt)                                         \
 }
 
-%luarocks_prep %{_require_luadist}cp '%{luarock_rockspec_file}' './%{luarock_pkg_rockspec}'
+%luarocks_prep %{_require_luadist}cp '%{luarocks_rockspec_file}' './%{luarocks_pkg_rockspec}'
 
