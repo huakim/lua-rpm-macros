@@ -66,6 +66,37 @@ function luadist:get_rockspec_file()
   return self:prepare_macros('luarocks_rockspec_file', '%{SOURCE1}', 0)
 end
 
+function sh_str(value)
+   return '"'..value:gsub("\\", "\\\\"):gsub('"','\\"'):gsub('`','\\`'):gsub('%$', '\\$')..'"'
+end
+
+function luadist:get_binary_source(binary)
+    return rpm.expand('%{luarocks_treedir}/')..self:get_name()..'/'..self:get_version()..'/bin/'..binary
+end
+
+function luadist:add_lua_binary(arg, opt)
+  if #arg > 0 then
+    local bindir = opt.b
+    if not bindir then
+      bindir = rpm.expand('%{_bindir}')
+    end
+    local binary = arg[1]
+    prior = opt.p
+    if not prior then
+      prior = '25'
+    end
+    local binary_dest = sh_str(bindir..'/'..binary)
+    print('update-alternatives --install '..binary_dest..' '..sh_str(binary)..' '..sh_str(self:get_binary_source(binary))..' '..sh_str(prior))
+  end
+end
+
+function luadist:drop_lua_binary(arg, opt)
+  if #arg > 0 then
+    local binary = arg[1]
+    print('update-alternatives --remove '..sh_str(binary)..' '..sh_str(self:get_binary_source(binary)))
+  end
+end
+
 function luadist:parse_modreq(arg, opt)
   if rpm.isdefined('lua_versions_nodots')
   then

@@ -31,3 +31,10 @@ BuildRequires: make \
 
 %luarocks_prep %{_require_luadist}cp '%{luarocks_rockspec_file}' './%{luarocks_pkg_rockspec}'
 
+%add_lua_binary (-) %{_require_luadist}%{lua:
+  luadist_parser:add_lua_binary(arg, opt)
+}
+
+%drop_lua_binary(-) %{_require_luadist}%{lua:
+  luadist_parser:drop_lua_binary(arg, opt)
+}
