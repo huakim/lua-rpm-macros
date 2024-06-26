@@ -8,6 +8,10 @@ BuildArch: noarch
 Requires: luarocks-subpackages-macros
 Requires: luarocks-macros
 Requires: lua-macros
+Requires: luajit-macros
+
+%package -n luajit-macros
+Summary: %{summary}
 
 %package -n luarocks-macros
 Requires: lua-macros
@@ -17,6 +21,7 @@ Summary: %{summary}
 Summary: %{summary}
 Requires: python3-specfile
 Requires: luarocks-macros
+Requires: luajit-macros
 
 %description
 %{summary}.
@@ -25,6 +30,9 @@ Requires: luarocks-macros
 %{summary}.
 
 %description -n luarocks-macros
+%{summary}.
+
+%description -n luajit-macros
 %{summary}.
 
 %prep
@@ -49,3 +57,5 @@ destdir=%{buildroot}
 %{_rpmconfigdir}/lua_subpackages_helper.py
 %{_rpmluadir}/luarocks_subpackages.lua
 
+%files -n luajit-macros
+%{_rpmmacrodir}/macros.luajit

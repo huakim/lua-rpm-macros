@@ -2,7 +2,7 @@
 from sys import argv
 import itertools
 import specfile as SpecFileParser
-arg_dict = {'tmp', 'specfile', 'lua_versions', 'flags', 'lua_version', 'random', 'package', 'name', 'version', 'summary'}
+arg_dict = {'tmp', 'specfile', 'lua_versions', 'flags', 'lua_version', 'random', 'package', 'name', 'version', 'summary', 'luajit_version'}
 
 glob_temp = globals()
 
@@ -23,19 +23,23 @@ scriplet_sections = [ scriplet(*i) for i in itertools.product(
     )]
 
 lua_versions = lua_versions.split()
-
+lua_versions.sort()
 expand_files = 'f' in flags
 
 multi_sections = { i: SpecFileParser.Specfile(
     specfile, macros=[ ( 'lua_version', i ), ('luarocks_subpackages', '#'), ('lua_files', '-f lua_subpackages.list') ]
     ) for i in lua_versions }
 
-spec = multi_sections[lua_version]
+try:
+    spec = multi_sections[lua_version]
+except KeyError:
+    spec = multi_sections[lua_versions[-1]]
+
 sections = spec.parsed_sections
 
 tag_dict = {}
 tag_names = {"Requires",
-    "BuildRequires",
+#    "BuildRequires",
     "Provides",
     "Recommends",
     "Suggests",
@@ -100,6 +104,9 @@ for i in lua_versions:
     if i == lua_version:
         print(f'Provides: {pkg_name} = {version}')
         print(f'Provides: luadist({package}) = {version}')
+    if i == luajit_version:
+        print(f'Provides: luajit-{name} = {version}')
+        print(f'Provides: luajitdist({package}) = {version}')
     print(f'Requires: Lua(API) = {i}')
     print(f'%description -n {iname}')
 
