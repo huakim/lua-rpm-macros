@@ -1,5 +1,5 @@
 Name: lua-rpm-macros
-Version: 1.0.2
+Version: 1.0.3
 Release: 0
 Summary: Luarocks generator macros
 License: GPLv3
