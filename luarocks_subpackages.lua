@@ -124,7 +124,7 @@ tree="$(%__luarocks config variables.ROCKS_TREE --lua-version ${i} --tree="%{bui
 echo "${tree#"%{buildroot}"}" > "$flist"
 
 while read -r line; do
-  echo_module ${line} >> "$flist"
+  echo_module "${i}" ${line} >> "$flist"
 
 done <<< "$(%__luarocks --lua-version ${i} show --porcelain --tree="%{buildroot}%{_prefix}" "%{luarocks_pkg_name}")"
 
