@@ -106,7 +106,7 @@ echo_module(){
     # Get the directory part of the path
     local dir=$(dirname "$path")
     # Print the directories as %dir statements
-    while [ "%{_libdir}/lua/$1:%{_datadir}/lua/$1" =~ "$dir" ]; do
+    while [ ! "%{_libdir}/lua/$1:%{_datadir}/lua/$1" =~ "$dir" ]; do
       echo "%%dir $dir"
       dir=$(dirname "$dir")
     done
