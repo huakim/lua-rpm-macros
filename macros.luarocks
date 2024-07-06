@@ -5,7 +5,14 @@
 
 %luarocks_move mkdir -p '%{dirname %{buildroot}%{_prefix}}'; mv "$PWD"'/.luarocks/%{_prefix}' '%{buildroot}%{_prefix}'
 
-%luarocks_buildrequires %{lua_module luarocks} %{lua_module devel} gcc-c++ gcc make
+%luarocks_buildrequires %{lua_module luarocks}, %{lua_module devel}, gcc-c++, gcc, make
+
+%luarocks_buildrequires_echo %{lua:                                          \
+  local reqs = rpm.expand('%luarocks_buildrequires')                         \
+  for word in string.gmatch(reqs, '([^,]+)') do                              \
+    print(word)                                                              \
+  end                                                                        \
+}
 
 %_require_luadist %{lua:                                                     \
   if luadist_parser == nil                                                   \
