@@ -103,14 +103,12 @@ for i in lua_versions:
         i_value = itag.value
         if i_name in tag_names:
             print(f'{i_name}: {i_value}')
-
     if i == lua_version:
         print(f'Provides: {pkg_name} = {version}')
         print(f'Provides: luadist({package}) = {version}')
     if i == luajit_version:
         print(f'Provides: luajit-{name} = {version}')
         print(f'Provides: luajitdist({package}) = {version}')
-    print(f'Requires: Lua(API) = {i}')
     print(f'%description -n {iname}')
 
     print(description)
