@@ -6,7 +6,7 @@ function luadist:rockspec_var(placeholder)
     then
       local path = self:get_rockspec_file()
       local file = rpm.open(path, 'r')
-      self.luarocks_rockspec = load(
+      luarocks_rockspec = load(
 [[
 local _ENV = {}
 
@@ -14,6 +14,7 @@ local _ENV = {}
 
 return _ENV
 ]])()
+      self.luarocks_rockspec = luarocks_rockspec
     end
     return load('return function(lua) return lua.'..placeholder..' end')()(luarocks_rockspec)
 end
@@ -67,11 +68,31 @@ function luadist:get_rockspec_file()
 end
 
 function sh_str(value)
-   return '"'..value:gsub("\\", "\\\\"):gsub('"','\\"'):gsub('`','\\`'):gsub('%$', '\\$')..'"'
+  return '"'..value:gsub("\\", "\\\\"):gsub('"','\\"'):gsub('`','\\`'):gsub('%$', '\\$')..'"'
 end
 
 function luadist:get_binary_source(binary)
-    return rpm.expand('%{luarocks_treedir}/')..self:get_name()..'/'..self:get_version()..'/bin/'..binary
+  return rpm.expand('%{luarocks_treedir}/')..self:get_name()..'/'..self:get_version()..'/bin/'..binary
+end
+
+function luadist:print_lua_modules(str)
+  local tab = self:rockspec_var(str)
+  if tab then
+    newline = string.char(10)
+    for i, a in ipairs(tab) do
+      self:parse_modreq({a}, {}, newline)
+      print(newline)
+    end
+  end
+end
+
+function luadist:generate_buildrequires(arg, opt)
+  if opt.b then
+    self:print_lua_modules('build_dependencies')
+  end
+  if opt.c then
+    self:print_lua_modules('test_dependencies')
+  end
 end
 
 function luadist:add_lua_binary(arg, opt)
@@ -97,14 +118,17 @@ function luadist:drop_lua_binary(arg, opt)
   end
 end
 
-function luadist:parse_modreq(arg, opt)
+function luadist:parse_modreq(arg, opt, sep)
+  if not sep then
+    sep = ', '
+  end
   if rpm.isdefined('lua_versions_nodots')
   then
     func = string.gmatch(rpm.expand('%lua_versions_nodots'), "[^%s]+")
     local flavor = func()
     goto named1
     ::named2::
-    print(', ')
+    print(sep)
     ::named1::
     self:parse_req(arg, opt, 'lua'..flavor, true )
     flavor = func()
