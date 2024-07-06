@@ -7,7 +7,7 @@ function luadist:rockspec_var(placeholder)
       local path = self:get_rockspec_file()
       if not pcall(function()
         local file = rpm.open(path, 'r')
-        luarocks_rockspec = load(
+        self.luarocks_rockspec = load(
 [[
 local _ENV = {}
 
@@ -15,10 +15,10 @@ local _ENV = {}
 
 return _ENV
 ]])()
-        self.luarocks_rockspec = luarocks_rockspec
       end) then
         self.luarocks_rockspec = {}
       end
+      luarocks_rockspec = self.luarocks_rockspec
     end
     return load('return function(lua) return lua.'..placeholder..' end')()(luarocks_rockspec)
 end
