@@ -27,7 +27,10 @@ lua_versions.sort()
 expand_files = 'f' in flags
 
 multi_sections = { i: SpecFileParser.Specfile(
-    specfile, macros=[ ('_sourcedir', sourcedir) ( 'lua_version', i ), ('luarocks_subpackages', '#'), ('lua_files', '-f lua_subpackages.list') ]
+    specfile, macros=[ ('_sourcedir', sourcedir),
+	( 'lua_version', i ),
+	('luarocks_subpackages', '#'),
+	('lua_files', '-f lua_subpackages.list') ]
     ) for i in lua_versions }
 
 try:
