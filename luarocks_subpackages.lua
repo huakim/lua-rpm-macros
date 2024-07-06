@@ -98,9 +98,18 @@ then
   local genlist = [[
 
 echo_module(){
-  if test "$1" == "module"
+  if test "$2" == "module"
   then
-    echo ${3#"%{buildroot}"}
+    local path=${4#"%{buildroot}"}
+    # Print the file path
+    echo "$path"
+    # Get the directory part of the path
+    local dir=$(dirname "$path")
+    # Print the directories as %dir statements
+    while [[ ! "%{_libdir}/lua/$1:%{_datadir}/lua/$1" =~ "$dir" ]]..']]'..[[; do
+      echo "%%dir $dir"
+      dir=$(dirname "$dir")
+    done
   fi
 }
 
@@ -115,7 +124,7 @@ tree="$(%__luarocks config variables.ROCKS_TREE --lua-version ${i} --tree="%{bui
 echo "${tree#"%{buildroot}"}" > "$flist"
 
 while read -r line; do
-  echo_module ${line} >> "$flist"
+  echo_module "${i}" ${line} >> "$flist"
 
 done <<< "$(%__luarocks --lua-version ${i} show --porcelain --tree="%{buildroot}%{_prefix}" "%{luarocks_pkg_name}")"
 

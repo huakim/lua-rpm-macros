@@ -44,4 +44,5 @@
   luadist_parser:generate_buildrequires(arg, opt)                            \
 }
 
-%luarocks_generate_buildrequires(bc) %{_require_luadist}rpm --eval '%%{define luarocks_rockspec_file %{luarocks_rockspec_file}}%%__luarocks_generate_buildrequires_helper %**'
+%luarocks_generate_buildrequires(bc) %{_require_luadist}rpm --eval '%%{define luarocks_rockspec_file %{luarocks_rockspec_file}}%%__luarocks_generate_buildrequires_helper %**                               \
+'
