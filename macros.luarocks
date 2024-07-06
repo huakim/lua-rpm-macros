@@ -10,7 +10,9 @@
 %luarocks_buildrequires_echo %{lua:                                          \
   local reqs = rpm.expand('%luarocks_buildrequires')                         \
   for word in string.gmatch(reqs, '([^,]+)') do                              \
+    print('echo ')
     print(word)                                                              \
+    print(' ; ')
   end                                                                        \
 }
 
