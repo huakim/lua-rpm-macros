@@ -29,7 +29,7 @@ function luadist:prepare_macros(name, template, template_type)
     if template_type == nil
     then
       template = template:gsub('(.?)%%{([^}]+)}', function(prefix, placeholder)
-      return(prefix=='%')and('%%{'..placeholder..'}')or((prefix or'')..self:rockspec_var(placeholder))
+      return(prefix=='%')and('%%{'..placeholder..'}')or((prefix or'')..(self:rockspec_var(placeholder) or ('%{'..placeholder..'}')))
     end):gsub('%%%%','%%')
     elseif template_type == 1
     then
