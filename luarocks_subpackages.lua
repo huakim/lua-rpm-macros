@@ -67,12 +67,12 @@ file:close()
 
 if not rpm.isdefined('luarocks_pkg_build')
 then
-  rpm.define("luarocks_pkg_build() dir='.luarocks/lua'%{1} ; mkdir -pv ${dir} ; %luarocks_build --local --lua-version %{1} '%{luarocks_pkg_rockspec}' ; mv '%{luarocks_pkg_prefix}'.*.rock ${dir}")
+  rpm.define("luarocks_pkg_build() %{luarocks_build_luaver %1}")
 end
 
 if not rpm.isdefined('luarocks_pkg_install')
 then
-  rpm.define("luarocks_pkg_install() %luarocks_install --lua-version %{1} .luarocks/lua%{1}/'%{luarocks_pkg_prefix}'.*.rock ; rm -Rf '%{buildroot}%{_bindir}'")
+  rpm.define("luarocks_pkg_install() %{luarocks_install_luaver %1}")
 end
 
 local build = [[
