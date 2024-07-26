@@ -110,6 +110,10 @@ function luadist:generate_buildrequires(arg, opt)
   end
 end
 
+function luadist:get_lua_version()
+  return rpm.expand('%{lua_version}')
+end
+
 function luadist:add_lua_binary(arg, opt)
   if #arg > 0 then
     local bindir = opt.b
@@ -121,8 +125,14 @@ function luadist:add_lua_binary(arg, opt)
     if not prior then
       prior = '25'
     end
+    local lua_version = self:get_lua_version()
+    local binary_ver = binary .. '-' .. lua_version
     local binary_dest = sh_str(bindir..'/'..binary)
-    print('update-alternatives --install '..binary_dest..' '..sh_str(binary)..' '..sh_str(self:get_binary_source(binary))..' '..sh_str(prior))
+    local binary_dest_ver = sh_str(bindir..'/'..binary_ver)
+    local binary_src = sh_str(self:get_binary_source(binary))
+    prior = sh_str(prior)
+    binary = sh_str(binary)
+    print('update-alternatives --install '..binary_dest..' '..binary..' '..binary_src..' '..prior..' ; update-alternatives --install '..binary_dest_ver..' '..binary_ver..' '..binary_src..' '..prior)
   end
 end
 
