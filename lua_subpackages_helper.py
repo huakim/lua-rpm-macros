@@ -2,7 +2,7 @@
 from sys import argv
 import itertools
 import specfile as SpecFileParser
-arg_dict = {'rpmlua_version', 'sourcedir', 'tmp', 'specfile', 'lua_versions', 'flags', 'lua_version', 'random', 'package', 'name', 'version', 'summary', 'luajit_version'}
+arg_dict = {'sourcedir', 'tmp', 'specfile', 'lua_versions', 'flags', 'lua_version', 'random', 'package', 'name', 'version', 'summary', 'luajit_version'}
 
 glob_temp = globals()
 
