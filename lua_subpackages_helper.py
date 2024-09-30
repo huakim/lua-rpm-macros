@@ -2,7 +2,7 @@
 from sys import argv
 import itertools
 import specfile as SpecFileParser
-arg_dict = {'sourcedir', 'tmp', 'specfile', 'lua_versions', 'flags', 'lua_version', 'random', 'package', 'name', 'version', 'summary', 'luajit_version'}
+arg_dict = {'rpmlua_version', 'sourcedir', 'tmp', 'specfile', 'lua_versions', 'flags', 'lua_version', 'random', 'package', 'name', 'version', 'summary', 'luajit_version'}
 
 glob_temp = globals()
 
@@ -88,6 +88,11 @@ fileout = open(tmp, 'w')
 def print(a):
     fileout.write(a)
     fileout.write('\n')
+
+#print(f'%package -n rpmlua-{name}')
+#print(f'Summary: {summary}')
+#print(f'Requires: lua' + rpmlua_version.replace('.','') + '-' + name)
+
 
 for i in lua_versions:
     prefix = 'lua' + i.replace('.','')
