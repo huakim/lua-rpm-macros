@@ -15,7 +15,7 @@ Requires: luajit-macros
 Summary: %{summary}
 
 %package -n luarocks-macros
-Requires: lua-macros
+Requires: (lua-macros or lua-rpm-macros)
 Summary: %{summary}
 
 
