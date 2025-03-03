@@ -5,12 +5,9 @@ Summary: Luarocks generator macros
 License: GPLv3
 Source0: %{name}-%{version}.tar.xz
 BuildArch: noarch
-%if %{suse_version}
+
 Requires: luarocks-subpackages-macros
 Requires: lua-macros
-%else
-Requires: lua-rpm-macros
-%endif
 Requires: luarocks-macros
 Requires: luajit-macros
 
@@ -42,7 +39,6 @@ configdir=%{_rpmconfigdir}
 destdir=%{buildroot}
 . install.sh
 
-%files
 
 %files -n luarocks-macros
 %{_rpmmacrodir}/macros.luarocks
@@ -52,6 +48,8 @@ destdir=%{buildroot}
 %{_rpmmacrodir}/macros.luajit
 
 %if %{suse_version}
+%files
+
 %package -n luarocks-subpackages-macros
 Summary: %{summary}
 Requires: python3-specfile
