@@ -37,8 +37,7 @@ macrodir=%{_rpmmacrodir}
 luadir=%{_rpmluadir}
 configdir=%{_rpmconfigdir}
 destdir=%{buildroot}
-pwd
-. install.sh
+source $(pwd)/install.sh
 
 
 %files -n luarocks-macros
