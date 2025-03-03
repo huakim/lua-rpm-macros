@@ -1,3 +1,0 @@
-%__luajit %{_bindir}/luajit
-%luajit_lua_version_compat 5.1
-%luajit_version 2.1
