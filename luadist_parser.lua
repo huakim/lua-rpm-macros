@@ -170,13 +170,17 @@ function luadist:parse_req(arg, opt, flavor, nodist)
   if #arg > 0
   then
     local name = arg[1]
-    local flav = 'lua'
+    local flav = nil
     if flavor
     then
       flav = flavor
     elseif rpm.isdefined('lua_flavor')
     then
       flav = rpm.expand('%lua_flavor')
+    end
+    if (flav == nil)
+    then
+      flav = rpm.expand('lua%{lua_version}');
     end
     if not (name == 'lua')
     then
