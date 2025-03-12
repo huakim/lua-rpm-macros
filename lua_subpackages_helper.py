@@ -89,6 +89,11 @@ def print(a):
     fileout.write(a)
     fileout.write('\n')
 
+#print(f'%package -n rpmlua-{name}')
+#print(f'Summary: {summary}')
+#print(f'Requires: lua' + rpmlua_version.replace('.','') + '-' + name)
+
+
 for i in lua_versions:
     prefix = 'lua' + i.replace('.','')
     iname = f'{prefix}-{name}'
