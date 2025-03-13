@@ -181,6 +181,7 @@ function luadist:parse_req(arg, opt, flavor, nodist)
     if (flav == nil)
     then
       if nodist
+      then
         flav = 'lua'
       else
         flav = rpm.expand('lua%{lua_version}');
