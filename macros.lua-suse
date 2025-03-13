@@ -17,3 +17,30 @@ luarocks --lua-version="%{lua_version}" --tree="%{buildroot}%{_prefix}" \\\
 install --deps-mode=none --no-manifest
 
 %luarocks_treedir %{_prefix}/lib/luarocks/rocks-%{lua_version}
+
+
+%lua_generate_file_list(n:v:l:)                                                                         \
+echo_module(){                                                                                          \
+  if test "$2" == "module"                                                                              \
+  then                                                                                                  \
+    local path=${4#"%{buildroot}"}                                                                      \
+    echo "$path"                                                                                        \
+  fi                                                                                                    \
+}                                                                                                       \
+                                                                                                        \
+n="%{?-n*}%{?!-n*:%{luarocks_pkg_name}}"                                                                \
+i="%{?-v*}%{?!-v*:%{lua_version}}"                                                                      \
+flist="%{?-l*}%{?!-l*:lua_files.list}"                                                                  \
+                                                                                                        \
+luarocks-admin --lua-version ${i} --tree="%{buildroot}%{_prefix}" make_manifest                         \
+tree="$(luarocks config variables.ROCKS_TREE --lua-version ${i} --tree="%{buildroot}%{_prefix}")"       \
+echo "${tree#"%{buildroot}"}" > "$flist"                                                                \
+                                                                                                        \
+while read -r line; do                                                                                  \
+  echo_module "${i}" ${line} >> "$flist"                                                                \
+done <<< "$(luarocks --lua-version ${i} show --porcelain --tree="%{buildroot}%{_prefix}" "${n}")"       \
+                                                                                                        \
+rm -Rf "${tree}/"{manifest,index}* ||:
+
+
+
