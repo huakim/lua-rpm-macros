@@ -15,9 +15,22 @@ Requires: luajit-macros
 Summary: %{summary}
 
 %package -n luarocks-macros
-Requires: (lua-macros or lua-rpm-macros)
 Summary: %{summary}
 
+%if 0%{?suse_version}
+Requires: lua-rpm-macros
+%else
+Requires: lua-macros
+
+%package -n lua-macros
+Summary: %{summary}
+
+%description -n lua-macros
+%{summary}.
+
+%files -n lua-macros
+%{_rpmmacrodir}/macros.lua-suse
+%endif
 
 %description
 %{summary}.
@@ -64,6 +77,7 @@ Requires: luajit-macros
 %{_rpmconfigdir}/lua_subpackages_helper.py
 %{_rpmluadir}/luarocks_subpackages.lua
 %else
+%exclude %{_rpmmacrodir}/macros.lua-suse
 %exclude %{_rpmmacrodir}/macros.luarocks_subpackages
 %exclude %{_rpmconfigdir}/lua_subpackages_helper.py
 %exclude %{_rpmluadir}/luarocks_subpackages.lua

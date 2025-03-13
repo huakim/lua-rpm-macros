@@ -3,6 +3,7 @@ luadir="${luadir:-$(rpm --eval '%{_rpmluadir}')}"
 configdir="${configdir:-$(rpm --eval '%{_rpmconfigdir}')}"
 destdir="${destdir:-/}"
 install -Dm644 {,"${destdir}${macrodir}/"}macros.luarocks
+install -Dm644 {,"${destdir}${macrodir}/"}macros.lua-suse
 install -Dm644 {,"${destdir}${macrodir}/"}macros.luarocks_subpackages
 install -Dm644 {,"${destdir}${luadir}/"}luarocks_subpackages.lua
 install -Dm644 {,"${destdir}${luadir}/"}luadist_parser.lua
