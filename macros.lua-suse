@@ -18,6 +18,7 @@ install --deps-mode=none --no-manifest
 
 %luarocks_treedir %{_prefix}/lib/luarocks/rocks-%{lua_version}
 
+%lua_api %{?suse_version:Lua(API)}%{?!suse_version:lua}
 
 %lua_generate_file_list(n:v:l:)                                                                         \
 echo_module(){                                                                                          \
