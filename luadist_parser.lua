@@ -196,7 +196,7 @@ function luadist:parse_req(arg, opt, flavor, nodist)
         name = flav .. 'dist(' .. name .. ')'
       end
     else
-      name = rpm.expand('%{?lua_api}%{?!lua_api:Lua(API)}')
+      name = rpm.expand('%{?lua_abi}%{?!lua_abi:Lua(API)}')
     end
     if #arg > 2
     then
