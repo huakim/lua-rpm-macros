@@ -36,6 +36,7 @@ echo_module(){                                                                  
   then                                                                                                  \
     echo -n "%ghost "                                                                                   \
     echo_path "$3"                                                                                      \
+    rm -fr "$3"                                                                                         \
   fi                                                                                                    \
 }                                                                                                       \
                                                                                                         \
