@@ -54,28 +54,48 @@ function luadist:prepare_macros(name, template, template_type)
 end
 
 function luadist:essential_setup()
-  self:get_rockspec()
+--  self:get_rockspec()
   self:get_prefix()
-  self:get_name()
-  self:get_version()
+--  self:get_name()
+--  self:get_version()
   self:get_rockspec_file()
   return self
 end
 
-function luadist:get_rockspec()
-  return self:prepare_macros('luarocks_pkg_rockspec', function () return self:get_prefix() .. '.rockspec' end, 1)
+function luadist:get_rockspec(name, major, minor)
+  return self:get_prefix(name, major, minor) .. '.rockspec'
+--  return self:prepare_macros('luarocks_pkg_rockspec', function () return self:get_prefix() .. '.rockspec' end, 1)
 end
 
-function luadist:get_prefix()
-  return self:prepare_macros('luarocks_pkg_prefix', function () return self:get_name() .. '-' .. self:get_version() end , 1)
+function luadist:get_prefix(name, major, minor)
+  return self:get_name(name) .. '-' .. self:get_version(major, minor)
+--  return self:prepare_macros('luarocks_pkg_prefix', function () return self:get_name() .. '-' .. self:get_version() end , 1)
 end
 
-function luadist:get_name()
-  return self:prepare_macros('luarocks_pkg_name', '%{package}')
+function luadist:get_name(name)
+  if not name then
+    name = self:prepare_macros('luarocks_pkg_name', '%{name}')
+  end
+  return name
 end
 
-function luadist:get_version()
-  return self:prepare_macros('luarocks_pkg_version', '%{version}')
+function luadist:get_major(major)
+  if not major then
+    major = self:prepare_macros('luarocks_pkg_major', "%{version}")
+  end
+  return major
+end
+
+function luadist:get_minor(minor)
+  if not minor then
+    minor = self:prepare_macros('luarocks_pkg_minor', "%{release}")
+  end
+  return minor
+end
+
+function luadist:get_version(major, minor)
+  return self:get_major(major) .. '-' .. self:get_minor(minor)
+--  return self:prepare_macros('luarocks_pkg_version', '%{version}-%{release}')
 end
 
 function luadist:get_rockspec_file()
@@ -86,8 +106,8 @@ function sh_str(value)
   return '"'..value:gsub("\\", "\\\\"):gsub('"','\\"'):gsub('`','\\`'):gsub('%$', '\\$')..'"'
 end
 
-function luadist:get_binary_source(binary)
-  return rpm.expand('%{luarocks_treedir}/')..self:get_name()..'/'..self:get_version()..'/bin/'..binary
+function luadist:get_binary_source(binary, opt)
+  return rpm.expand('%{luarocks_treedir}/')..self:get_name(opt.n)..'/'..self:get_version(opt.v)..'/bin/'..binary
 end
 
 function luadist:print_lua_modules(str)
@@ -139,7 +159,7 @@ end
 function luadist:drop_lua_binary(arg, opt)
   if #arg > 0 then
     local binary = arg[1]
-    print('update-alternatives --remove '..sh_str(binary)..' '..sh_str(self:get_binary_source(binary)))
+    print('update-alternatives --remove '..sh_str(binary)..' '..sh_str(self:get_binary_source(binary, opt)))
   end
 end
 
