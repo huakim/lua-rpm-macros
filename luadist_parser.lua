@@ -87,12 +87,12 @@ function luadist:get_version(version)
 end
 
 function luadist:get_major(version)
-  major, minor = luadist:get_version(version):match("^(.-)%(.-)$")
-  return minor
+  major, minor = luadist:get_version(version):match('([^-]+)-([^-]+)')
+  return major
 end
 
 function luadist:get_minor(version)
-  major, minor = luadist:get_version(version):match("^(.-)%(.-)$")
+  major, minor = luadist:get_version(version):match('([^-]+)-([^-]+)')
   return minor
 end
 
