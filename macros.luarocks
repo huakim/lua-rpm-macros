@@ -7,16 +7,20 @@
 
 %luarocks_buildrequires %{lua_module luarocks}, %{lua_module devel}, gcc-c++, gcc, make
 
-%luarocks_pkg_version(-) %{_require_luadist}%{lua:                        \
-  print(luadist_parser:get_version(opt.v, opt.r))                         \
+%luarocks_pkg_major(-) %{_require_luadist}%{lua:                             \
+  print(luadist_parser:get_major(opt.v))                                     \
 }
 
-%luarocks_pkg_prefix(-) %{_require_luadist}%{lua:                         \
-  print(luadist_parser:get_prefix(opt.n, opt.v, opt.r))                   \
+%luarocks_pkg_minor(-) %{_require_luadist}%{lua:                             \
+  print(luadist_parser:get_minor(opt.v))                                     \
 }
 
-%luarocks_pkg_rockspec(-) %{_require_luadist}%{lua:                        \
-  print(luadist_parser:get_rockspec(opt.n, opt.v, opt.r))                  \
+%luarocks_pkg_prefix(-) %{_require_luadist}%{lua:                            \
+  print(luadist_parser:get_prefix(opt.n, opt.v))                             \
+}
+
+%luarocks_pkg_rockspec(-) %{_require_luadist}%{lua:                          \
+  print(luadist_parser:get_rockspec(opt.n, opt.v))                           \
 }
 
 %luarocks_buildrequires_echo %{lua:                                          \

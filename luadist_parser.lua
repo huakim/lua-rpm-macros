@@ -62,40 +62,38 @@ function luadist:essential_setup()
   return self
 end
 
-function luadist:get_rockspec(name, major, minor)
-  return self:get_prefix(name, major, minor) .. '.rockspec'
+function luadist:get_rockspec(name, version)
+  return self:get_prefix(name, version) .. '.rockspec'
 --  return self:prepare_macros('luarocks_pkg_rockspec', function () return self:get_prefix() .. '.rockspec' end, 1)
 end
 
-function luadist:get_prefix(name, major, minor)
-  return self:get_name(name) .. '-' .. self:get_version(major, minor)
+function luadist:get_prefix(name, version)
+  return self:get_name(name) .. '-' .. self:get_version(version)
 --  return self:prepare_macros('luarocks_pkg_prefix', function () return self:get_name() .. '-' .. self:get_version() end , 1)
 end
 
 function luadist:get_name(name)
   if not name then
-    name = self:prepare_macros('luarocks_pkg_name', '%{name}')
+    name = self:prepare_macros('luarocks_pkg_name', '%{package}')
   end
   return name
 end
 
-function luadist:get_major(major)
-  if not major then
-    major = self:prepare_macros('luarocks_pkg_major', "%{version}")
+function luadist:get_version(version)
+  if not version then
+    version = self:prepare_macros('luarocks_pkg_version', "%{version}")
   end
-  return major
+  return version
 end
 
-function luadist:get_minor(minor)
-  if not minor then
-    minor = self:prepare_macros('luarocks_pkg_minor', "%{release}")
-  end
+function luadist:get_major(version)
+  major, minor = luadist:get_version(version):match("^(.-)%(.-)$")
   return minor
 end
 
-function luadist:get_version(major, minor)
-  return self:get_major(major) .. '-' .. self:get_minor(minor)
---  return self:prepare_macros('luarocks_pkg_version', '%{version}-%{release}')
+function luadist:get_minor(version)
+  major, minor = luadist:get_version(version):match("^(.-)%(.-)$")
+  return minor
 end
 
 function luadist:get_rockspec_file()

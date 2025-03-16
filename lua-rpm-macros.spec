@@ -1,4 +1,8 @@
+%if 0%{?suse_version}
 Name: lua-rpm-macros
+%else
+Name: luarocks-macros-source
+%endif
 Version: 1.1.9
 Release: 0
 Summary: Luarocks generator macros
