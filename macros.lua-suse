@@ -46,7 +46,7 @@ flist="%{?-l*}%{?!-l*:lua_files.list}"                                          
                                                                                                         \
 luarocks-admin --lua-version ${i} --tree="%{buildroot}%{_prefix}" make_manifest                         \
 tree="$(luarocks config variables.ROCKS_TREE --lua-version ${i} --tree="%{buildroot}%{_prefix}")"       \
-echo "${tree#"%{buildroot}"}/${n}" > "$flist"                                                           \
+echo "${tree#"%{buildroot}"}/${n}"'/*' > "$flist"                                                       \
                                                                                                         \
 while read -r line; do                                                                                  \
   echo_module "${i}" ${line} >> "$flist"                                                                \
