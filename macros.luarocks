@@ -59,3 +59,11 @@
 
 %luarocks_generate_buildrequires(bc) %{_require_luadist}rpm --eval '%%{define luarocks_rockspec_file %{luarocks_rockspec_file}}%%__luarocks_generate_buildrequires_helper %**                               \
 '
+
+%luarocks_pkg_major(-) %{_require_luadist}%{lua:                             \
+  print(luadist_parser:get_major(opt.v))                                     \
+}
+
+%luarocks_pkg_minor(-) %{_require_luadist}%{lua:                             \
+  print(luadist_parser:get_minor(opt.v))                                     \
+}

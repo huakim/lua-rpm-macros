@@ -82,6 +82,16 @@ function luadist:get_rockspec_file()
   return self:prepare_macros('luarocks_rockspec_file', '%{SOURCE1}', 0)
 end
 
+function luadist:get_major(version)
+  major, minor = luadist:get_version(version):match("([^-]*)-([^-]*)")
+  return minor
+end
+
+function luadist:get_minor(version)
+  major, minor = luadist:get_version(version):match("([^-]*)-([^-]*)")
+  return minor
+end
+
 function sh_str(value)
   return '"'..value:gsub("\\", "\\\\"):gsub('"','\\"'):gsub('`','\\`'):gsub('%$', '\\$')..'"'
 end
