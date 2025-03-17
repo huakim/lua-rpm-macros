@@ -1,9 +1,13 @@
+%if 0%{?suse_version}
 Name: lua-rpm-macros
+%else
+Name: luarocks-macros-source
+%endif
 Version: 1.1.9
 Release: 0
 Summary: Luarocks generator macros
 License: GPLv3
-Source0: %{name}-%{version}.tar.xz
+Source0: lua-rpm-macros-%{version}.tar.xz
 BuildArch: noarch
 
 Requires: luarocks-subpackages-macros
@@ -42,7 +46,7 @@ Summary: %{summary}
 %{summary}.
 
 %prep
-%autosetup -p1 -n %{name}-%{version}
+%autosetup -p1 -n lua-rpm-macros-%{version}
 
 %install
 

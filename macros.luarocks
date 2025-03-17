@@ -7,12 +7,28 @@
 
 %luarocks_buildrequires %{lua_module luarocks}, %{lua_module devel}, gcc-c++, gcc, make
 
+%luarocks_pkg_major(-) %{_require_luadist}%{lua:                             \
+  print(luadist_parser:get_major(opt.v))                                     \
+}
+
+%luarocks_pkg_minor(-) %{_require_luadist}%{lua:                             \
+  print(luadist_parser:get_minor(opt.v))                                     \
+}
+
+%luarocks_pkg_prefix(-) %{_require_luadist}%{lua:                            \
+  print(luadist_parser:get_prefix(opt.n, opt.v))                             \
+}
+
+%luarocks_pkg_rockspec(-) %{_require_luadist}%{lua:                          \
+  print(luadist_parser:get_rockspec(opt.n, opt.v))                           \
+}
+
 %luarocks_buildrequires_echo %{lua:                                          \
   local reqs = rpm.expand('%luarocks_buildrequires')                         \
   for word in string.gmatch(reqs, '([^,]+)') do                              \
-    print('echo ')
+    print('echo ')                                                           \
     print(word)                                                              \
-    print(' ; ')
+    print(' ; ')                                                             \
   end                                                                        \
 }
 
@@ -37,9 +53,9 @@
   luadist_parser:parse_req(arg, opt)                                         \
 }
 
-%luarocks_build_luaver() %{_require_luadist}dir='.luarocks/lua'%{1} ; mkdir -pv ${dir} ; %luarocks_build --local --lua-version %{1} '%{luarocks_pkg_rockspec}' ; mv '%{luarocks_pkg_prefix}'.*.rock ${dir}
+%luarocks_build_luaver(-) %{_require_luadist}dir='.luarocks/lua'%{1} ; mkdir -pv ${dir} ; %luarocks_build --local --lua-version %{1} '%{luarocks_pkg_rockspec %**}' ; mv '%{luarocks_pkg_prefix %**}'.*.rock ${dir}
 
-%luarocks_install_luaver() %{_require_luadist}%luarocks_install --lua-version %{1} .luarocks/lua%{1}/'%{luarocks_pkg_prefix}'.*.rock ; rm -Rf '%{buildroot}%{_bindir}'
+%luarocks_install_luaver(-) %{_require_luadist}%luarocks_install --lua-version %{1} .luarocks/lua%{1}/'%{luarocks_pkg_prefix %**}'.*.rock ; rm -Rf '%{buildroot}%{_bindir}'
 
 %luarocks_prep %{_require_luadist}cp '%{luarocks_rockspec_file}' './%{luarocks_pkg_rockspec}'
 
@@ -47,7 +63,7 @@
   luadist_parser:add_lua_binary(arg, opt)                                    \
 }
 
-%rockspec_path %{_require_luadist}%{luarocks_treedir}/%{luarocks_pkg_name}/%{luarocks_pkg_version}/%{luarocks_pkg_rockspec}
+%rockspec_path(-) %{_require_luadist}%{luarocks_treedir}/%{?-n*}%{?!-n*%{luarocks_pkg_name}}/%{luarocks_pkg_version %**}/%{luarocks_pkg_rockspec %**}
 
 %drop_lua_binary(-) %{_require_luadist}%{lua:                                \
   luadist_parser:drop_lua_binary(arg, opt)                                   \

@@ -21,11 +21,22 @@ install --deps-mode=none --no-manifest
 %lua_abi %{?suse_version:Lua(API)}%{?!suse_version:lua(abi)}
 
 %lua_generate_file_list(n:v:l:)                                                                         \
+echo_path(){                                                                                            \
+    local path=${1#"%{buildroot}"}                                                                      \
+    shift                                                                                               \
+    echo "$path" "${@}"                                                                                 \
+}                                                                                                       \
+                                                                                                        \
 echo_module(){                                                                                          \
   if test "$2" == "module"                                                                              \
   then                                                                                                  \
-    local path=${4#"%{buildroot}"}                                                                      \
-    echo "$path"                                                                                        \
+    echo_path "$4"                                                                                      \
+  fi                                                                                                    \
+  if test "$2" == "command"                                                                             \
+  then                                                                                                  \
+    echo -n "%ghost "                                                                                   \
+    echo_path "$3"                                                                                      \
+    rm -fr "$3"                                                                                         \
   fi                                                                                                    \
 }                                                                                                       \
                                                                                                         \
@@ -35,7 +46,7 @@ flist="%{?-l*}%{?!-l*:lua_files.list}"                                          
                                                                                                         \
 luarocks-admin --lua-version ${i} --tree="%{buildroot}%{_prefix}" make_manifest                         \
 tree="$(luarocks config variables.ROCKS_TREE --lua-version ${i} --tree="%{buildroot}%{_prefix}")"       \
-echo "${tree#"%{buildroot}"}" > "$flist"                                                                \
+echo "${tree#"%{buildroot}"}/${n}"'/*' > "$flist"                                                       \
                                                                                                         \
 while read -r line; do                                                                                  \
   echo_module "${i}" ${line} >> "$flist"                                                                \
