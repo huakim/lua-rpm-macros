@@ -82,11 +82,6 @@ Requires: luajit-macros
 %{_rpmmacrodir}/macros.luarocks_subpackages
 %{_rpmconfigdir}/lua_subpackages_helper.py
 %{_rpmluadir}/luarocks_subpackages.lua
-%else
-%exclude %{_rpmmacrodir}/macros.lua-suse
-%exclude %{_rpmmacrodir}/macros.luarocks_subpackages
-%exclude %{_rpmconfigdir}/lua_subpackages_helper.py
-%exclude %{_rpmluadir}/luarocks_subpackages.lua
 %endif
 
 
