@@ -1,3 +1,5 @@
+
+%global _unpackaged_files_terminate_build               0
 %if 0%{?suse_version}
 Name: lua-rpm-macros
 %else
