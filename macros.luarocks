@@ -83,3 +83,38 @@
 %luarocks_pkg_minor(-) %{_require_luadist}%{lua:                             \
   print(luadist_parser:get_minor(opt.v))                                     \
 }
+
+%_luarocks_genlist(-) %{expand: (                                            \
+ echo_module(){                                                              \
+   %{_luarocks_echo_module $1 $2 $4}                                         \
+ }                                                                           \
+ flav=%{1}                                                             \
+ flav="${flav:-lua}"                                                         \
+ flist=%{2}                                                            \
+ %__luarocks_admin --lua-version ${flav} --tree="%{buildroot}%{_prefix}" make_manifest                                  \
+ tree="$(%__luarocks config variables.ROCKS_TREE --lua-version ${flav} --tree="%{buildroot}%{_prefix}")"          \
+ echo "${tree#"%{buildroot}"}" > "$flist"                                                                               \
+ while read -r line; do                                                                                                 \
+   echo_module "${flav}" ${line} >> "$flist"                                                                            \
+ done <<< "$(%__luarocks --lua-version ${flav} show --porcelain --tree="%{buildroot}%{_prefix}" "%{luarocks_pkg_name}")"\
+ rm -Rf "${tree}/"{manifest,index}* ||:                                                                                 \
+) }
+
+%_luarocks_echo_module(-) %{expand:                                          \
+(  module=%2                                                           \
+   path=%3                                                             \
+   name=%1                                                             \
+   if test "${module}" == "module"                                           \
+   then                                                                      \
+     path=${path#"%{buildroot}"}                                             \
+     echo "${path}"                                                          \
+     dir="$(dirname "${path}")"                                        \
+     while [[ ! "%{_libdir}/lua/${name}:%{_datadir}/lua/${name}" =~ "$dir" ]]\
+     do                                                                      \
+       echo "%%dir $dir"                                                     \
+       dir=$(dirname "$dir")                                                 \
+     done                                                                    \
+   fi )                                                                      \
+}
+
+%lua_generate_file_list(-) %_luarocks_genlist %{lua_version} "lua_files.list"

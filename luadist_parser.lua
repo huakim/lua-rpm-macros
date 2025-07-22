@@ -1,11 +1,12 @@
 local luadist = {}
 
 function luadist:rockspec_var(placeholder)
-    local luarocks_rockspec = self.luarocks_rockspec
-    if luarocks_rockspec == nil
-    then
-      local path = self:get_rockspec_file()
-      if not pcall(function()
+  local luarocks_rockspec = self.luarocks_rockspec
+  if luarocks_rockspec == nil
+  then
+    local path = self:get_rockspec_file()
+    if not pcall(
+      function()
         local file = rpm.open(path, 'r')
         self.luarocks_rockspec = load(
 [[
@@ -16,11 +17,11 @@ local _ENV = {}
 return _ENV
 ]])()
       end) then
-        self.luarocks_rockspec = {}
-      end
-      luarocks_rockspec = self.luarocks_rockspec
+      self.luarocks_rockspec = {}
     end
-    return load('return function(lua) return lua.'..placeholder..' end')()(luarocks_rockspec)
+    luarocks_rockspec = self.luarocks_rockspec
+  end
+  return load('return function(lua) return lua.'..placeholder..' end')()(luarocks_rockspec)
 end
 
 function luadist:prepare_macros(name, template, template_type)
@@ -175,7 +176,7 @@ function luadist:parse_modreq(arg, opt, sep)
   if not sep then
     sep = ', '
   end
-  if rpm.isdefined('lua_versions_nodots')
+  if rpm.isdefined('lua_versions_nodots') and (self['_LUA_DIST_'] == true)
   then
     func = string.gmatch(rpm.expand('%lua_versions_nodots'), "[^%s]+")
     local flavor = func()
