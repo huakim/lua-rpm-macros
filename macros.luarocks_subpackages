@@ -1,4 +1,4 @@
-%lua_versions 5.1 5.3 5.4
+%lua_versions 5.1 5.3 5.4 5.5
 
 %lua_flavor lua%{lua_version_nodots}
 
